@@ -1,6 +1,3 @@
-// FetchCountries.jsx
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -8,17 +5,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
-const FetchCountries = ({ setSelectedCountry }) => {
-  const [countries, setCountries] = useState([]);
-
-  useEffect(() => {
-    axios.get('https://restcountries.com/v3.1/all')
-      .then((res) => setCountries(res.data))
-      .catch((error) => console.error('Error fetching countries:', error));
-  }, []);
-
+const FetchCountries = ({countries}) => {
   const handleCardClick = (country) => {
-    setSelectedCountry(country);
+
   };
 
   return (
@@ -44,21 +33,22 @@ const FetchCountries = ({ setSelectedCountry }) => {
                 <Typography variant="body2">{c.area}</Typography>
               </div>
             </Popup>
-          </Marker>
+            </Marker>
         ))}
-      </MapContainer>
+        </MapContainer>
 
-      <div>
-        {countries.map((c) => (
-          <div key={c.name.common} onClick={() => handleCardClick(c)}>
-            <Link to={`/countries/${c.name.common}`}>
-              <Card>
+        <div>
+        {countries.map((country) => (
+          <div key={country.name.common} onClick={() => handleCardClick(country)}>
+                {/* <DetailCountry countryData={country}/> */}
+            <Link to={`/countries/${country.name.common}`}>
+                  <Card>
                 <CardContent>
                   <Typography variant="h5" component="div">
-                    {c.name.common}
+                    {country.name.common}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {c.area}
+                    {country.area}
                   </Typography>
                 </CardContent>
               </Card>
