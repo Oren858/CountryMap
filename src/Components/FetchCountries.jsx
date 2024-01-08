@@ -40,7 +40,6 @@ const FetchCountries = ({countries}) => {
         <div>
         {countries.map((country) => (
           <div key={country.name.common} onClick={() => handleCardClick(country)}>
-                {/* <DetailCountry countryData={country}/> */}
             <Link to={`/countries/${country.name.common}`}>
                   <Card>
                 <CardContent>

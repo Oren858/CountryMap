@@ -13,7 +13,6 @@ const DetailCountry = ({ countries }) => {
     zoom: 9,
   });
 
-
   const { nom } = useParams();
   const navigate = useNavigate();
   const mapRef = useRef();
@@ -39,7 +38,7 @@ const DetailCountry = ({ countries }) => {
       mapRef.current.flyTo(mapSettings.center, mapSettings.zoom);
     }
   }, [mapSettings]);
-
+  
   const handleGoToCountryList = () => {
     navigate(-1);
   };
