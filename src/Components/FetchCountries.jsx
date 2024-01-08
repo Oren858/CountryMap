@@ -4,10 +4,14 @@ import 'leaflet/dist/leaflet.css';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import { useDispatch } from 'react-redux';
+import { setSelectedCountry } from '../utils/features/countrySlice';
+
 
 const FetchCountries = ({countries}) => {
+  const dispatch=useDispatch();
   const handleCardClick = (country) => {
-
+      dispatch(setSelectedCountry(country))
   };
 
   return (

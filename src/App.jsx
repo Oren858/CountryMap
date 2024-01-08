@@ -1,9 +1,10 @@
 // App.jsx
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import FetchCountries from "./Components/FetchCountries";
 import DetailCountry from "./Components/DetailCountry";
 import useCountries from './Hooks/useCountries';
+
 
 
 const App = () => {

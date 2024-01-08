@@ -1,43 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import { useSelector } from "react-redux";
 
-const DetailCountry = ({ countries }) => {
-  const [selectedCountry, setSelectedCountry] = useState();
-  const [mapSettings, setMapSettings] = useState({
-    center: [0, 0],
-    zoom: 9,
-  });
 
-  const { nom } = useParams();
+const DetailCountry = () => {
+  const selectedCountry=useSelector(state=>state.country.selectedCountry);
   const navigate = useNavigate();
   const mapRef = useRef();
 
   useEffect(() => {
-    const filtredCountry = countries.filter(
-      (country) => country.name.common === nom
-    );
-    setSelectedCountry(...filtredCountry);
-  }, [nom]);
-
-  useEffect(() => {
-    if (selectedCountry) {
-      setMapSettings({
-        ...mapSettings,
-        center: [selectedCountry.latlng[0], selectedCountry.latlng[1]],
-      });
+    if (mapRef.current ) {
+      mapRef.current.flyTo(selectedCountry.latlng, selectedCountry.zoom);
     }
   }, [selectedCountry]);
-
-  useEffect(() => {
-    if (mapRef.current && mapSettings.center[0]) {
-      mapRef.current.flyTo(mapSettings.center, mapSettings.zoom);
-    }
-  }, [mapSettings]);
   
   const handleGoToCountryList = () => {
     navigate(-1);
@@ -50,7 +30,7 @@ const DetailCountry = ({ countries }) => {
           <Card>
             <CardContent>
               <Typography variant="h5" component="div">
-                {nom}
+                {selectedCountry.name.common}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 {selectedCountry.area}
@@ -58,13 +38,13 @@ const DetailCountry = ({ countries }) => {
             </CardContent>
           </Card>
 
-          {mapSettings.center[0] && (
+          {selectedCountry.latlng && (
             <MapContainer
               whenCreated={(map) => {
                 mapRef.current = map;
               }}
-              center={mapSettings.center}
-              zoom={mapSettings.zoom}
+              center={selectedCountry.latlng}
+              zoom={9}
               style={{ height: "400px", width: "100%" }}
             >
               <TileLayer
@@ -72,7 +52,7 @@ const DetailCountry = ({ countries }) => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               />
 
-              <Marker position={mapSettings.center}>
+              <Marker position={selectedCountry.latlng}>
                 <Popup>
                   <div>
                     <Typography variant="h6">
